@@ -2,12 +2,13 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  createColumnHelper,
 } from "@tanstack/react-table";
-import React from "react";
-
-import columns from "../../assets/columns";
+import React, { useState } from "react";
 
 import "./table.css";
+import addressToString from "./../../assets/columns";
+import { Checkbox } from "@mui/material";
 
 interface TableProps {
   data: Array<any> | [];
@@ -15,6 +16,64 @@ interface TableProps {
 }
 
 function Table(tableProps: TableProps) {
+  const [selectedRows, setSelectedRows] = useState(Array<string>);
+
+  const handleSelection = (test: any) => {
+    console.log(test);
+    setSelectedRows([...selectedRows, "test"]);
+  };
+
+  const columnHelper = createColumnHelper();
+  const columns = [
+    columnHelper.display({
+      id: "id",
+      header: "",
+      cell: (props: any) => (
+        <td>
+          <Checkbox
+            value={props.id}
+            onClick={() => handleSelection(props.getValue())}
+          ></Checkbox>
+        </td>
+      ),
+    }),
+    {
+      accessorKey: "id",
+      header: "Dataset ID",
+      cell: (props: any) => <td>{props.getValue()}</td>,
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: (props: any) => <td>{props.getValue()}</td>,
+    },
+    {
+      accessorKey: "username",
+      header: "User name",
+      cell: (props: any) => <td>{props.getValue()}</td>,
+    },
+    {
+      accessorKey: "email",
+      header: "Email",
+      cell: (props: any) => <td>{props.getValue()}</td>,
+    },
+    {
+      accessorKey: "address",
+      header: "Address",
+      cell: (props: any) => <td>{addressToString(props.getValue())}</td>,
+    },
+    {
+      accessorKey: "phone",
+      header: "Phone",
+      cell: (props: any) => <td>{props.getValue()}</td>,
+    },
+    {
+      accessorKey: "website",
+      header: "Website",
+      cell: (props: any) => <td>{props.getValue()}</td>,
+    },
+  ];
+
   const table = useReactTable({
     data: tableProps.data,
     columns,
@@ -29,7 +88,7 @@ function Table(tableProps: TableProps) {
     <table className="table">
       <thead className="thead">
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr className="thead__row" key={headerGroup.id}>
+          <tr key={headerGroup.id} className="thead__row">
             {headerGroup.headers.map((header) => (
               <th key={header.id}>
                 {header.column.columnDef.header?.toString()}
@@ -40,9 +99,12 @@ function Table(tableProps: TableProps) {
       </thead>
       <tbody className="tbody">
         {table.getRowModel().rows.map((row) => (
-          <tr className="tbody__row" key={row.id}>
+          <tr key={row.id} className="tbody__row">
             {row
               .getVisibleCells()
+              .filter((cell) => {
+                return cell.column.id !== "check";
+              })
               .map((cell) =>
                 flexRender(cell.column.columnDef.cell, cell.getContext())
               )}

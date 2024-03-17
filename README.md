@@ -1,11 +1,10 @@
 # To dos
 
 1. Table styling
-2. Sorting columns
+2. Selecting, sorting columns
 3. Clean up components
 4. Set up image and push to Docker hub (nginx)
 5. Unit tests
-
 
 # Getting Started with Create React App
 
