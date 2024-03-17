@@ -1,3 +1,12 @@
+# To dos
+
+1. Table styling
+2. Sorting columns
+3. Clean up components
+4. Set up image and push to Docker hub (nginx)
+5. Unit tests
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
