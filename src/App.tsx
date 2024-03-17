@@ -43,7 +43,12 @@ function App() {
     });
   }, []);
 
-  return <Table data={data} isLoading={isLoading}></Table>;
+  return (
+    <div>
+      <header></header>
+      <Table data={data} isLoading={isLoading}></Table>
+    </div>
+  );
 }
 
 export default App;

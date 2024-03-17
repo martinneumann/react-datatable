@@ -1,6 +1,8 @@
 import {
+  SortingState,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
@@ -8,6 +10,7 @@ import React, { useState } from "react";
 import "./table.css";
 import addressToString from "./../../assets/columns";
 import { Checkbox } from "@mui/material";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
 
 interface TableProps {
   data: Array<any> | [];
@@ -16,6 +19,7 @@ interface TableProps {
 
 function Table(tableProps: TableProps) {
   const [selectedRows, setSelectedRows] = useState(new Set<string>());
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const handleRowClick = (id: string) => {
     // idea: do not use state, since this only changes after the next render.
@@ -25,15 +29,17 @@ function Table(tableProps: TableProps) {
         return new Set(a);
       });
     else setSelectedRows((a: Set<string>) => new Set(a).add(id));
-    console.log(selectedRows);
   };
 
   const columns = [
     {
+      accessorFn: (row: any) => row,
       id: "id",
       header: "",
       cell: (id: any) => (
-        <Checkbox checked={selectedRows.has(id.getValue())}></Checkbox>
+        <td>
+          <Checkbox checked={selectedRows.has(id.getValue())}></Checkbox>
+        </td>
       ),
     },
     {
@@ -77,6 +83,11 @@ function Table(tableProps: TableProps) {
     data: tableProps.data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
   });
 
   if (tableProps.isLoading) {
@@ -89,8 +100,26 @@ function Table(tableProps: TableProps) {
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="thead__row">
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <th
+                key={header.id}
+                onClick={header.column.getToggleSortingHandler()}
+              >
+                <p>
+                  {header.column.getCanSort()
+                    ? header.column.getNextSortingOrder() === "asc"
+                      ? "Sort ascending"
+                      : header.column.getNextSortingOrder() === "desc"
+                      ? "Sort descending"
+                      : "Clear sort"
+                    : undefined}
+                </p>
                 {header.column.columnDef.header?.toString()}
+                {
+                  {
+                    asc: " 🔼",
+                    desc: " 🔽",
+                  }[header.column.getIsSorted() as string]
+                }
               </th>
             ))}
           </tr>
