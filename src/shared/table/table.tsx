@@ -2,7 +2,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  createColumnHelper,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
 
@@ -16,27 +15,27 @@ interface TableProps {
 }
 
 function Table(tableProps: TableProps) {
-  const [selectedRows, setSelectedRows] = useState(Array<string>);
+  const [selectedRows, setSelectedRows] = useState(new Set<string>());
 
-  const handleSelection = (test: any) => {
-    console.log(test);
-    setSelectedRows([...selectedRows, "test"]);
+  const handleRowClick = (id: string) => {
+    // idea: do not use state, since this only changes after the next render.
+    if (selectedRows.has(id))
+      setSelectedRows((a: Set<string>) => {
+        a.delete(id);
+        return new Set(a);
+      });
+    else setSelectedRows((a: Set<string>) => new Set(a).add(id));
+    console.log(selectedRows);
   };
 
-  const columnHelper = createColumnHelper();
   const columns = [
-    columnHelper.display({
+    {
       id: "id",
       header: "",
-      cell: (props: any) => (
-        <td>
-          <Checkbox
-            value={props.id}
-            onClick={() => handleSelection(props.getValue())}
-          ></Checkbox>
-        </td>
+      cell: (id: any) => (
+        <Checkbox checked={selectedRows.has(id.getValue())}></Checkbox>
       ),
-    }),
+    },
     {
       accessorKey: "id",
       header: "Dataset ID",
@@ -99,7 +98,11 @@ function Table(tableProps: TableProps) {
       </thead>
       <tbody className="tbody">
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id} className="tbody__row">
+          <tr
+            key={row.id}
+            className="tbody__row"
+            onClick={() => handleRowClick(row.original.id)}
+          >
             {row
               .getVisibleCells()
               .filter((cell) => {

@@ -25,7 +25,7 @@ function fetchData(url: string | URL | Request) {
 }
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(Array<any>);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +36,9 @@ function App() {
     );
 
     result.pipe(take(1)).subscribe((res: any) => {
-      setData(res);
+      // Merge data (here only for check boxes)
+      if (data) setData([...data, ...res]);
+      else setData(res);
       setIsLoading(false);
     });
   }, []);
