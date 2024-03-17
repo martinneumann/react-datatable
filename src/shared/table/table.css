@@ -1,0 +1,22 @@
+.table {
+  width: 100%;
+}
+
+.thead {
+  padding: 22px;
+
+  th {
+    text-align: left;
+  }
+}
+
+.tbody {
+  tr:nth-child(even) {
+    background-color: #f0f0f0;
+  }
+}
+
+td,
+th {
+  padding-left: 12px;
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import { Observable, take } from "rxjs";
-import Table from "./shared/table";
+import Table from "./shared/table/table";
+import "./styles.css";
 
 const TEST_URL = "https://jsonplaceholder.typicode.com/users";
 
@@ -41,9 +41,7 @@ function App() {
     });
   }, []);
 
-  return (
-    <Box width={500}>{<Table data={data} isLoading={isLoading}></Table>}</Box>
-  );
+  return <Table data={data} isLoading={isLoading}></Table>;
 }
 
 export default App;
