@@ -103,16 +103,8 @@ function Table(tableProps: TableProps) {
               <th
                 key={header.id}
                 onClick={header.column.getToggleSortingHandler()}
+                className={header.column.getCanSort() ? "sortable" : undefined}
               >
-                <p>
-                  {header.column.getCanSort()
-                    ? header.column.getNextSortingOrder() === "asc"
-                      ? "Sort ascending"
-                      : header.column.getNextSortingOrder() === "desc"
-                      ? "Sort descending"
-                      : "Clear sort"
-                    : undefined}
-                </p>
                 {header.column.columnDef.header?.toString()}
                 {
                   {
