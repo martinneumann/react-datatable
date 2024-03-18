@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Observable, take } from "rxjs";
 import Table from "./shared/table/table";
+import Header from "./components/header/header";
 import "./styles.css";
 
 const TEST_URL = "https://jsonplaceholder.typicode.com/users";
@@ -45,6 +46,7 @@ function App() {
 
   return (
     <div>
+      <Header></Header>
       <header></header>
       <Table data={data} isLoading={isLoading}></Table>
     </div>
