@@ -9,7 +9,7 @@ import React, { useState } from "react";
 
 import "./table.css";
 import addressToString from "../../utils/addressToString";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Tooltip } from "@mui/material";
 
 interface TableProps {
   data: Array<any> | [];
@@ -99,19 +99,23 @@ function Table(tableProps: TableProps) {
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="thead__row">
             {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                onClick={header.column.getToggleSortingHandler()}
-                className={header.column.getCanSort() ? "sortable" : undefined}
-              >
-                {header.column.columnDef.header?.toString()}
-                {
+              <Tooltip title="Click on a header to sort">
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className={
+                    header.column.getCanSort() ? "sortable" : undefined
+                  }
+                >
+                  {header.column.columnDef.header?.toString()}
                   {
-                    asc: " 🔼",
-                    desc: " 🔽",
-                  }[header.column.getIsSorted() as string]
-                }
-              </th>
+                    {
+                      asc: " 🔼",
+                      desc: " 🔽",
+                    }[header.column.getIsSorted() as string]
+                  }
+                </th>
+              </Tooltip>
             ))}
           </tr>
         ))}
