@@ -1,36 +1,39 @@
 import React, { FC } from "react";
 import { HeaderWrapper } from "./header.styled";
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Box, Toolbar, Typography, colors } from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {}
 
-const Header: FC<HeaderProps> = () => (
-  <HeaderWrapper data-testid="Header">
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          ></IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  </HeaderWrapper>
-);
+const Header: FC<HeaderProps> = () => {
+  const toolBarStyle = {
+    gap: "12px",
+  };
+  const linkStyle = {
+    color: "white",
+  };
+  return (
+    <HeaderWrapper data-testid="Header">
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar className="app-bar" position="static">
+          <Toolbar style={toolBarStyle}>
+            <Link style={linkStyle} to={`/data`}>
+              Data
+            </Link>
+            <Link style={linkStyle} to={`/datasets`}>
+              Datasets
+            </Link>
+            <Link style={linkStyle} to={`/pipelines`}>
+              Pipelines
+            </Link>
+            <Link style={linkStyle} to={`/trainings`}>
+              Trainings
+            </Link>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </HeaderWrapper>
+  );
+};
 
 export default Header;

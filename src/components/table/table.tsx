@@ -8,9 +8,8 @@ import {
 import React, { useState } from "react";
 
 import "./table.css";
-import addressToString from "./../../assets/columns";
+import addressToString from "../../utils/addressToString";
 import { Checkbox } from "@mui/material";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
 
 interface TableProps {
   data: Array<any> | [];
